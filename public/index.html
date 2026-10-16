@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0b0a10">
-<title>VivaVoice · practice your viva out loud</title>
-<meta name="description" content="Drop in your report PDF and a voice examiner grills you on it, scores every answer live, cuts in when you ramble, and hands you a report with a model answer. Built on the AssemblyAI Voice Agent API.">
+<title>VivaVoice · learn and prepare out loud</title>
+<meta name="description" content="A voice peer for learning, exams, presentations and job interviews. Add your notes or application materials and practise with live feedback.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,35 +31,33 @@
 <main id="view-setup" class="view setup">
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow"><span class="pulse"></span>Voice agent · built on AssemblyAI</p>
-      <h1>Rehearse your viva <em>out loud</em>, with an examiner who has read your report.</h1>
-      <p class="lede">It questions you on your own work, follows up on what you actually said, scores every answer while you talk, and shows you what a 5 / 5 answer sounds like.</p>
+      <h1>Learn and prepare <em>out loud</em>, with a peer who knows your material.</h1>
+      <p class="lede">Add your notes or application materials, then practise with a voice coach that asks, listens, gives feedback and tracks your progress.</p>
       <ol class="path" aria-label="How it works">
-        <li><b>1</b><span>Upload</span><small>your report PDF</small></li>
-        <li><b>2</b><span>Talk</span><small>to a live examiner</small></li>
-        <li><b>3</b><span>Improve</span><small>with a scored report</small></li>
+        <li><b>1</b><span>Add</span><small>your notes or application</small></li>
+        <li><b>2</b><span>Practise</span><small>with a live voice peer</small></li>
+        <li><b>3</b><span>Improve</span><small>with feedback and progress</small></li>
       </ol>
     </div>
     <div class="hero-orb" aria-hidden="true">
       <canvas id="hero-aura"></canvas>
-      <div class="float q1"><span class="eyebrow">Examiner</span>Your field mAP is 0.87 but PlantVillage is 0.95. What explains the gap?</div>
-      <div class="float q2"><span class="eyebrow good">Evaluation · 4 / 5</span>Named the domain shift. Quantify the gain next time.</div>
     </div>
   </section>
 
   <form id="setup-form" class="card form" autocomplete="off">
     <div class="form-head">
       <div class="seg" role="radiogroup" aria-label="Session type">
-        <label><input type="radio" name="mode" value="viva" checked><span>Project viva</span></label>
+        <label><input type="radio" name="mode" value="study" checked><span>Study partner</span></label>
+        <label><input type="radio" name="mode" value="viva"><span>Project / presentation</span></label>
         <label><input type="radio" name="mode" value="interview"><span>Job interview</span></label>
       </div>
       <button type="button" class="btn link" id="sample-btn">✦ Try a sample</button>
     </div>
 
-    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload your report as a PDF">
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload your notes or application PDF">
       <input type="file" id="pdf-input" accept="application/pdf" hidden>
       <div class="drop-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="m9 15 3-3 3 3"/></svg></div>
-      <div class="drop-text"><b id="drop-title">Drop your report PDF here</b><small id="drop-sub">or click to choose. The abstract, methods, results and conclusion are pulled out in your browser; the file never leaves your computer.</small></div>
+      <div class="drop-text"><b id="drop-title">Drop notes or a document PDF here</b><small id="drop-sub">Your PDF is read in the browser and its text stays in this session.</small></div>
     </div>
 
     <div class="row two">
@@ -67,15 +65,22 @@
       <label class="field"><span>Your name <small>optional</small></span><input name="name" maxlength="60" placeholder="e.g. Aisyah"></label>
     </div>
 
-    <label class="field"><span id="context-label">Abstract, summary or key sections of your report</span>
-      <textarea name="context" rows="6" maxlength="6000" required placeholder="The more specific this is, the sharper the questions."></textarea>
+    <label class="field"><span id="context-label">Your notes or topic material</span>
+    <textarea name="context" rows="6" maxlength="6000" required placeholder="Paste notes, a syllabus, learning objectives or a topic summary."></textarea>
+    </label>
+    <div class="row two interview-materials" id="interview-materials" hidden>
+    <label class="field"><span>Your CV</span><textarea name="cv" rows="4" maxlength="4000" placeholder="Paste the CV you used for this application."></textarea></label>
+    <label class="field"><span>Cover letter</span><textarea name="coverLetter" rows="4" maxlength="4000" placeholder="Paste the cover letter you used."></textarea></label>
+    </div>
+    <label class="field interview-materials" id="job-description-field" hidden><span>Job description</span>
+    <textarea name="jobDescription" rows="5" maxlength="5000" placeholder="Paste the job description and requirements."></textarea>
     </label>
     <div class="keyterms"><span class="kt-label">Sent to AssemblyAI as <b>keyterms</b> <span class="muted">· <span id="char-count">0</span>/6000</span></span><span id="keyterm-preview" class="kt-list"></span></div>
 
     <details class="settings">
-      <summary><span>Examiner settings</span><span class="summary-chips" id="settings-summary"></span></summary>
+      <summary><span>Session settings</span><span class="summary-chips" id="settings-summary"></span></summary>
       <div class="settings-grid">
-        <label class="field"><span>Examiner</span>
+        <label class="field"><span>Coach style</span>
           <select name="persona"><option value="supportive">Supportive but rigorous</option><option value="strict">Strict external examiner</option></select>
         </label>
         <label class="field"><span>Main questions</span>
@@ -97,7 +102,7 @@
     <p class="error" id="setup-error" role="alert" hidden></p>
     <div class="actions">
       <p class="fineprint">🎧 Headphones recommended. Audio goes to AssemblyAI for the live session only.</p>
-      <button type="submit" class="btn primary big" id="start-btn">Start the viva</button>
+      <button type="submit" class="btn primary big" id="start-btn">Start learning</button>
     </div>
   </form>
 
@@ -112,9 +117,9 @@
   </section>
 
   <section class="how">
-    <div><span class="how-ic">◉</span><b>Hears your jargon</b><p>Terms from your report go to AssemblyAI as keyterms, and turn detection is tuned for thinking pauses.</p></div>
-    <div><span class="how-ic">↻</span><b>Probes like a panel</b><p>Follow-ups build on your exact words. Ramble past 90 seconds and it politely cuts in.</p></div>
-    <div><span class="how-ic">▲</span><b>Scores as you speak</b><p>Tool calls fill the rubric live, then a report with a model answer and a drill for your weakest area.</p></div>
+    <div><span class="how-ic">◉</span><b>Talk through your notes</b><p>Questions are grounded in your own material, with hints and follow-ups when you get stuck.</p></div>
+    <div><span class="how-ic">↻</span><b>Practise any goal</b><p>Revise for exams, rehearse presentations, or meet a two-person interview panel.</p></div>
+    <div><span class="how-ic">▲</span><b>See your progress</b><p>Get private feedback, a model answer and a clear next step after every session.</p></div>
   </section>
 </main>
 
@@ -204,8 +209,6 @@
     <section class="card wide"><details><summary><h3>Full transcript</h3></summary><div id="r-transcript" class="transcript static"></div></details></section>
   </div>
 </main>
-
-<footer class="foot">Built for the AssemblyAI Voice Agent Hackathon · <a href="https://www.assemblyai.com/products/voice-agent-api" target="_blank" rel="noopener">Voice Agent API</a> · <a href="https://github.com/ShermaineYap/AssemblyAI-Voice-Agent-Hackathon" target="_blank" rel="noopener">Source</a></footer>
 
 <script type="module" src="/app.js"></script>
 </body>

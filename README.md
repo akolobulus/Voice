@@ -1,8 +1,8 @@
 # VivaVoice 🎙️
 
-**Rehearse your viva out loud, with an examiner who has read your report.**
+**Learn, practise and prepare out loud, with a voice peer who knows your material.**
 
-VivaVoice is a real-time voice agent for students and job seekers. Paste your project abstract (or a job description) and a voice examiner questions you on it. It asks follow-ups built on what you actually said, scores every answer against a rubric **live on screen** while you talk, and gives you a written report at the end.
+VivaVoice is a real-time voice peer for students and job seekers. Add your notes, syllabus, report, CV, cover letter or job description and talk through the material instead of only rereading it. The coach asks questions, adapts to your answers, explains gaps, gives feedback on your progress and produces a practical next-step report.
 
 Built for the [AssemblyAI Voice Agent Hackathon](https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon) on the **[AssemblyAI Voice Agent API](https://www.assemblyai.com/docs/voice-agents/voice-agent-api)**.
 
@@ -14,23 +14,29 @@ Built for the [AssemblyAI Voice Agent Hackathon](https://lablab.ai/ai-hackathons
 
 ---
 
-## Why
+## The problem
 
-Every final-year student has to defend their project in a viva, and most people interview for jobs they care about. Nearly everyone prepares by *reading*, yet the test is *spoken*. Mock vivas need a lecturer's time, and generic interview bots ask textbook questions that have nothing to do with your work.
+Students often revise passively by rereading notes, then discover in an exam, presentation or viva that they cannot retrieve or explain what they know. They need a low-pressure peer who can ask follow-ups, expose misconceptions and help them practise speaking, but teachers and classmates cannot provide unlimited one-to-one practice.
 
-VivaVoice gives you unlimited spoken practice on **your own material**:
+Job seekers face the same gap. Generic interview practice ignores the candidate's actual CV, cover letter and target role, while a realistic panel interview is difficult to arrange. Candidates need repeated practice with feedback on both their examples and their communication.
 
-- It asks questions that come from your abstract ("Your field mAP is 0.87 but PlantVillage is 0.95. What explains that gap?"), not generic ones like "tell me about yourself".
-- A vague answer gets a follow-up that builds on your exact words.
-- You see where you're weak while it happens, then leave with specific fixes and practice questions.
+## The solution
+
+VivaVoice turns a learner's own material into a spoken practice partner:
+
+- **Study partner:** add notes, a syllabus or a topic and get retrieval questions, explain-it-simply prompts, examples and supportive corrections.
+- **Exam and presentation rehearsal:** practise defending a project or presenting a topic, with follow-ups grounded in the material rather than generic trivia.
+- **Interview panel:** add the CV, cover letter and job description. Maya, a hiring-manager persona, and Daniel, a technical interviewer persona, alternate questions so the session feels like a panel.
+- **Feedback that compounds:** every answer is assessed privately for understanding, recall, application, gaps and communication. The report shows strengths, misconceptions, a model answer, practice questions and the next area to work on.
+- **Progress over time:** browser-local history tracks scores, filler words, thinking time and recurring weak areas across sessions.
 
 ## What it does
 
 | | |
 |---|---|
-| **Drop in your report PDF** | The abstract, methodology, results and conclusion are pulled out in the browser with pdf.js; the file never leaves your computer. Or paste any text. |
-| **Two modes** | *Project viva* (problem, technical depth, design justification, evaluation, communication) and *Job interview* (role fit, technical, problem solving, behavioural/STAR, communication). |
-| **Two examiner personas** | Supportive but rigorous, or a strict external examiner who gives no hints. |
+| **Bring your own material** | Drop in a PDF or paste notes directly. Text is extracted in the browser; the original file never leaves your computer. |
+| **Three practice modes** | *Study partner* (understanding, recall, application, gaps), *Project / presentation* (defence and delivery), and *Job interview* (role fit, technical, problem solving, behavioural/STAR). |
+| **Application-aware panel** | Interview practice combines your CV, cover letter and job description so questions test your real evidence and the role's requirements. |
 | **Live rubric** | The agent calls `record_score` after each answer, so bars fill in and private examiner notes (evidence + tip) appear as you speak. |
 | **Question card** | The agent calls `show_question`, so the current question and topic stay on screen. Follow-ups are tagged as follow-ups. |
 | **Delivery coaching** | Words per minute, filler words (highlighted in the transcript), and thinking time before each answer, all computed from AssemblyAI's live transcript and speech events. |

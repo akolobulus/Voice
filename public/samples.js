@@ -1,5 +1,11 @@
 // "Fill with a sample" content, so judges can try it in ten seconds.
 export const SAMPLES = {
+  study: {
+    subject: 'Cell biology: mitosis and meiosis',
+    context: `Mitosis produces two genetically identical diploid daughter cells for growth, repair and asexual reproduction. The stages are prophase, metaphase, anaphase and telophase, followed by cytokinesis. In metaphase, chromosomes line up at the cell equator; in anaphase, sister chromatids separate to opposite poles.
+
+Meiosis produces four genetically different haploid cells for sexual reproduction. It has two divisions and creates variation through crossing over in prophase I and independent assortment. Homologous chromosomes separate in anaphase I, while sister chromatids separate in anaphase II. A key exam comparison is that mitosis preserves chromosome number whereas meiosis halves it.`,
+  },
   viva: {
     subject: 'LeafLens: Tomato leaf disease detection with YOLOv8 on a Raspberry Pi 5',
     context: `Smallholder tomato farmers in Cameron Highlands lose up to 30% of yield to early blight, late blight and leaf mould because diagnosis relies on visual inspection by extension officers who visit monthly.

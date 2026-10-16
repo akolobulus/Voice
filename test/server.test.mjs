@@ -42,9 +42,9 @@ test('token failure is a clean 502', async () => {
 })
 
 test('static paths cannot escape public/', () => {
-  assert.equal(resolveStatic('/../server.mjs')?.endsWith('server.mjs') && !resolveStatic('/../server.mjs').includes('/public/'), false)
-  assert.ok(resolveStatic('/app.js').endsWith('public/app.js'))
-  assert.ok(resolveStatic('/').endsWith('public/index.html'))
+  assert.equal(resolveStatic('/../server.mjs'), null)
+  assert.ok(resolveStatic('/app.js').replaceAll('\\', '/').endsWith('public/app.js'))
+  assert.ok(resolveStatic('/').replaceAll('\\', '/').endsWith('public/index.html'))
 })
 
 test('limiter window expires', () => {

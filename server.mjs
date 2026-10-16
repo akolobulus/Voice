@@ -11,7 +11,7 @@
 import http from 'node:http'
 import { readFile, stat } from 'node:fs/promises'
 import { readFileSync } from 'node:fs'
-import { extname, join, normalize } from 'node:path'
+import { extname, join, normalize, resolve as resolvePath } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url))
@@ -66,9 +66,10 @@ const TYPES = {
 export function resolveStatic(urlPath) {
   let clean
   try { clean = decodeURIComponent(urlPath.split('?')[0]) } catch { return null }
+  if (clean.split(/[\\/]+/).some((segment) => segment === '..')) return null
   const rel = normalize(clean === '/' ? '/index.html' : clean).replace(/^([/\\])+/, '')
-  const full = join(PUBLIC, rel)
-  if (!full.startsWith(PUBLIC)) return null
+  const full = resolvePath(PUBLIC, rel)
+  if (full !== PUBLIC && !full.startsWith(PUBLIC + '\\')) return null
   return full
 }
 

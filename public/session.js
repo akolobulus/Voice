@@ -2,6 +2,19 @@
 // Pure functions only, so the same file runs in the browser and in node:test.
 
 export const MODES = {
+  study: {
+    label: 'Study partner',
+    subjectLabel: 'Topic or exam',
+    contextLabel: 'Notes, syllabus or topic material',
+    examiner: 'a thoughtful peer study partner who helps the learner understand and remember their material',
+    rubric: [
+      { id: 'understanding', name: 'Understanding', hint: 'Explains the core idea accurately in their own words' },
+      { id: 'recall', name: 'Recall', hint: 'Retrieves important facts, terms and relationships without reading' },
+      { id: 'application', name: 'Application', hint: 'Applies the idea to an example, problem or unfamiliar situation' },
+      { id: 'gaps', name: 'Gaps & misconceptions', hint: 'Recognises uncertainty and corrects misunderstandings' },
+      { id: 'communication', name: 'Communication', hint: 'Explains clearly and structures spoken answers' },
+    ],
+  },
   viva: {
     label: 'Project viva',
     subjectLabel: 'Project title',
@@ -19,7 +32,7 @@ export const MODES = {
     label: 'Job interview',
     subjectLabel: 'Role you are applying for',
     contextLabel: 'Job description, and optionally a few lines about your experience',
-    examiner: 'an interviewer on the hiring panel for this role',
+    examiner: 'a two-person interview panel for this role: Maya, a warm but probing hiring manager, and Daniel, a precise technical interviewer',
     rubric: [
       { id: 'fit', name: 'Role fit', hint: 'Experience maps to the job requirements' },
       { id: 'technical', name: 'Technical knowledge', hint: 'Depth on the skills the role needs' },
@@ -166,7 +179,16 @@ export function buildSystemPrompt(cfg) {
   const focus = focusCrit
     ? ` This is a drill session: make every question probe "${focusCrit.name}" (${focusCrit.hint}), from different angles, and record every score under the ${focusCrit.id} criterion.`
     : ''
-  return `You are ${mode.examiner}. You are speaking with ${cfg.name || 'the candidate'} on a live voice call.
+  const studyRules = cfg.mode === 'study'
+    ? `- Act like a supportive peer, not a lecturer. Ask the learner to retrieve ideas before explaining them, then give one short correction, analogy or memory cue when useful.
+- Mix recall, explain-it-simply, application and exam-style questions. Adapt difficulty to their answers and revisit weak ideas later.
+- Give encouraging, specific feedback after answers. Never pretend they are correct when the material shows otherwise.`
+    : ''
+  const panelRules = cfg.mode === 'interview'
+    ? `- Run a two-person panel. Alternate between Maya and Daniel naturally, and identify the speaker briefly when switching. Maya focuses on motivation, communication and behaviour; Daniel focuses on technical depth and problem solving.
+- Keep both interviewers grounded in the submitted CV, cover letter and job description. Do not invent experience for the candidate.`
+    : ''
+  return `You are ${mode.examiner}. You are speaking with ${cfg.name || 'the learner'} on a live voice call.
 
 Subject: ${cfg.subject || 'not given'}
 
@@ -188,6 +210,8 @@ How to run the session:
 - Be calibrated: 5 means nothing important was missing. If an answer lacked a number, evidence or a trade-off, it is a 3 or 4, and the tip must say what was missing. A tip is never "none".
 - If the candidate asks to stop early, wrap up the same way with what you have.
 - If you receive an instruction that the candidate has been talking for too long, cut in politely, in one sentence, and ask them to finish with their single most important point. Then score what you heard.
+${studyRules}
+${panelRules}
 
 Rubric criteria ids:
 ${rubric}
@@ -199,8 +223,11 @@ export function buildGreeting(cfg) {
   const who = cfg.name ? `Hi ${cfg.name}.` : 'Hi.'
   const what = cfg.mode === 'interview'
     ? `this interview for the ${cfg.subject || 'role'}`
+    : cfg.mode === 'study'
+      ? `your study session on ${cfg.subject || 'this topic'}`
     : `your viva on ${cfg.subject || 'your project'}`
-  return `${who} Thanks for joining ${what}. I'll ask a few questions, one at a time. Just tell me when you're ready to begin.`.replace(/\s+/g, ' ')
+  const panel = cfg.mode === 'interview' ? ' Maya and Daniel will take turns on the panel.' : ''
+  return `${who} Thanks for joining ${what}.${panel} I'll ask a few questions, one at a time. Just tell me when you're ready to begin.`.replace(/\s+/g, ' ')
 }
 
 // Turn detection. "Thinking time" gives candidates longer pauses before the
@@ -218,8 +245,12 @@ export function turnDetection(thinkingTime) {
 export function buildTranscriptionPrompt(cfg) {
   const kind = cfg.mode === 'interview'
     ? `A spoken job interview for the role of ${cfg.subject || 'a graduate position'}.`
+    : cfg.mode === 'study'
+      ? `A spoken study session about ${cfg.subject || 'an academic topic'}.`
     : `A spoken university viva (oral project defence) about a final-year project titled "${cfg.subject || 'untitled'}".`
-  const who = ' An examiner asks questions and the candidate answers in English, often with technical vocabulary, numbers and model names.'
+  const who = cfg.mode === 'study'
+    ? ' A peer study partner asks questions and the learner answers in English, often with technical vocabulary and definitions.'
+    : ' An examiner asks questions and the candidate answers in English, often with technical vocabulary, numbers and model names.'
   const ctx = (cfg.context || '').replace(/\s+/g, ' ').trim()
   const room = 1750 - kind.length - who.length - 40
   return `${kind}${who}${ctx ? ` The project summary: ${ctx.slice(0, Math.max(0, room)).replace(/\s\S*$/, '')}` : ''}`.slice(0, 1750)

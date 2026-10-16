@@ -49,11 +49,23 @@ let wsConf = {}
 // ---------------------------------------------------------------- setup form
 function readForm() {
   const d = new FormData(form)
+  const mode = d.get('mode')
+  const context = mode === 'interview'
+    ? [
+      'JOB DESCRIPTION:\n' + String(d.get('jobDescription') || '').trim(),
+      'COVER LETTER:\n' + String(d.get('coverLetter') || '').trim(),
+      'CV:\n' + String(d.get('cv') || '').trim(),
+      'ADDITIONAL NOTES:\n' + String(d.get('context') || '').trim(),
+    ].filter((part) => !/:\n$/.test(part)).join('\n\n')
+    : String(d.get('context') || '').trim()
   return {
-    mode: d.get('mode'),
+    mode,
     name: String(d.get('name') || '').trim(),
     subject: String(d.get('subject') || '').trim(),
-    context: String(d.get('context') || '').trim(),
+    context,
+    cv: String(d.get('cv') || '').trim(),
+    coverLetter: String(d.get('coverLetter') || '').trim(),
+    jobDescription: String(d.get('jobDescription') || '').trim(),
     persona: d.get('persona'),
     questions: Number(d.get('questions')),
     voice: d.get('voice'),
@@ -77,10 +89,14 @@ function writeForm(v) {
 function syncForm() {
   const v = readForm()
   const mode = MODES[v.mode]
+  const interview = v.mode === 'interview'
   $('subject-label').textContent = mode.subjectLabel
   $('context-label').textContent = mode.contextLabel
-  form.elements.subject.placeholder = v.mode === 'interview' ? 'e.g. Junior Data Analyst' : 'e.g. Crop disease detection with YOLOv8'
-  $('start-btn').textContent = v.mode === 'interview' ? 'Start the interview' : 'Start the viva'
+  form.elements.subject.placeholder = interview ? 'e.g. Junior Data Analyst' : v.mode === 'study' ? 'e.g. Cell biology: mitosis and meiosis' : 'e.g. Crop disease detection with YOLOv8'
+  $('start-btn').textContent = interview ? 'Start the interview' : v.mode === 'study' ? 'Start learning' : 'Start practice'
+  document.querySelectorAll('.interview-materials').forEach((el) => { el.hidden = !interview })
+  $('drop-title').textContent = interview ? 'Drop your CV or application PDF here' : v.mode === 'study' ? 'Drop your notes PDF here' : 'Drop your report PDF here'
+  $('drop-sub').textContent = interview ? 'You can also paste your CV, cover letter and job description below.' : 'The PDF is read in your browser and its text stays in this session.'
   $('char-count').textContent = v.context.length
   renderKeyterms(v.context.trim().length >= 40 || v.subject ? extractKeyterms(v.subject, v.context) : [])
   const persona = form.elements.persona.selectedOptions[0]?.textContent.split(' ')[0] || ''
