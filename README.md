@@ -1,175 +1,241 @@
-# VivaVoice 🎙️
+# Voice
 
-**Learn, practise and prepare out loud, with a voice peer who knows your material.**
+**Turn what you know into confidence.**
 
-VivaVoice is a real-time voice peer for students and job seekers. Add your notes, syllabus, report, CV, cover letter or job description and talk through the material instead of only rereading it. The coach asks questions, adapts to your answers, explains gaps, gives feedback on your progress and produces a practical next-step report.
+Voice is a browser-based practice partner for students, presenters and job seekers. Bring your own notes, syllabus, project material, CV, cover letter or job description, then practise out loud with a live voice agent that asks useful questions, follows up on weak answers and gives you a clear next step.
 
-Built for the [AssemblyAI Voice Agent Hackathon](https://lablab.ai/ai-hackathons/assemblyai-voice-agent-hackathon) on the **[AssemblyAI Voice Agent API](https://www.assemblyai.com/docs/voice-agents/voice-agent-api)**.
+The product is designed around a simple idea: people improve faster when they have a safe place to retrieve knowledge, explain their thinking and receive specific feedback before the real exam, presentation or interview.
 
-![VivaVoice](docs/cover.png)
-
-**🔴 Try it live: [vivavoice-five.vercel.app](https://vivavoice-five.vercel.app)** (click *✦ Try a sample*, then *Start the viva*; allow the microphone)
-
-**▶ [Watch the 4-minute demo video](docs/VivaVoice-demo.mp4)**: a real session with the AssemblyAI examiner, from PDF upload to the final report.
+**Made by [Akolo Bulus](https://github.com/akolobulus)** · [LinkedIn](https://www.linkedin.com/in/akolo-bulus/)
 
 ---
 
 ## The problem
 
-Students often revise passively by rereading notes, then discover in an exam, presentation or viva that they cannot retrieve or explain what they know. They need a low-pressure peer who can ask follow-ups, expose misconceptions and help them practise speaking, but teachers and classmates cannot provide unlimited one-to-one practice.
+Most preparation is passive:
 
-Job seekers face the same gap. Generic interview practice ignores the candidate's actual CV, cover letter and target role, while a realistic panel interview is difficult to arrange. Candidates need repeated practice with feedback on both their examples and their communication.
+- Students reread notes but do not practise retrieving or explaining the material.
+- People often discover their knowledge gaps only during an exam, presentation or viva.
+- Classmates, teachers and mentors cannot provide unlimited one-to-one practice.
+- Generic AI answers are not grounded in the learner's own notes or goals.
+- Interview practice is often generic and does not test the evidence in a candidate's CV against a specific role.
+- Feedback is easy to forget when it is not connected to a measurable next step.
 
-## The solution
+The result is a confidence gap. A learner may recognise information on a page but struggle to recall it, apply it, communicate it clearly or defend it under pressure.
 
-VivaVoice turns a learner's own material into a spoken practice partner:
+## Our solution
 
-- **Study partner:** add notes, a syllabus or a topic and get retrieval questions, explain-it-simply prompts, examples and supportive corrections.
-- **Exam and presentation rehearsal:** practise defending a project or presenting a topic, with follow-ups grounded in the material rather than generic trivia.
-- **Interview panel:** add the CV, cover letter and job description. Maya, a hiring-manager persona, and Daniel, a technical interviewer persona, alternate questions so the session feels like a panel.
-- **Feedback that compounds:** every answer is assessed privately for understanding, recall, application, gaps and communication. The report shows strengths, misconceptions, a model answer, practice questions and the next area to work on.
-- **Progress over time:** browser-local history tracks scores, filler words, thinking time and recurring weak areas across sessions.
+Voice turns a learner's own material into an interactive rehearsal session:
 
-## What it does
+1. **Bring the material that matters.** Paste notes or upload a PDF. Interview candidates can add their CV, cover letter and job description.
+2. **Choose the goal.** Study a topic, defend a project or rehearse a job interview.
+3. **Practise out loud.** The voice peer asks questions, listens to the response and adapts with follow-ups.
+4. **Receive useful feedback.** Answers are assessed against a mode-specific rubric while delivery metrics are collected.
+5. **Leave with a plan.** The final report identifies strengths, gaps, a model answer, practice prompts and the most valuable next area to work on.
 
-| | |
-|---|---|
-| **Bring your own material** | Drop in a PDF or paste notes directly. Text is extracted in the browser; the original file never leaves your computer. |
-| **Three practice modes** | *Study partner* (understanding, recall, application, gaps), *Project / presentation* (defence and delivery), and *Job interview* (role fit, technical, problem solving, behavioural/STAR). |
-| **Application-aware panel** | Interview practice combines your CV, cover letter and job description so questions test your real evidence and the role's requirements. |
-| **Live rubric** | The agent calls `record_score` after each answer, so bars fill in and private examiner notes (evidence + tip) appear as you speak. |
-| **Question card** | The agent calls `show_question`, so the current question and topic stay on screen. Follow-ups are tagged as follow-ups. |
-| **Delivery coaching** | Words per minute, filler words (highlighted in the transcript), and thinking time before each answer, all computed from AssemblyAI's live transcript and speech events. |
-| **Jargon-aware listening** | Technical terms from your abstract (e.g. *YOLOv8n, NCNN, PlantVillage, Cameron Highlands*) are sent as **keyterms**, so AssemblyAI transcribes your field's vocabulary correctly. |
-| **Thinking time** | One toggle raises the turn-detection silence thresholds, so pausing to think mid-answer doesn't end your turn. |
-| **Barge-in** | Interrupt the examiner at any time; playback stops mid-word. |
-| **Rambling alarm** | If one answer runs past 90 s, the examiner cuts in and asks for your main point, like a real panel. (`?ramble=30` on the URL shortens it for demos.) |
-| **Model answer** | The report shows your weakest question with what you said next to a 5/5 answer built from your own material. |
-| **Progress** | Every report is kept in your browser: score, fillers and thinking time trend across sessions, plus your most common weak area. |
-| **Drill mode** | One button on the report starts a session that targets only your weakest criterion. |
-| **Report** | Overall mark, verdict, strengths, prioritised improvements, rubric table, delivery stats, practice questions and full transcript. Export as Markdown or print to PDF. |
+Voice is not intended to replace a teacher, mentor or recruiter. It gives people a private, repeatable first layer of practice so that their limited time with experts becomes more valuable.
 
-## Screenshots
+## Practice modes
 
-These are from a real session with the AssemblyAI Voice Agent on the sample project (LeafLens, tomato leaf disease detection).
+### Study partner
 
-| 1. Start from your own report | 2. The examiner asks about *your* work |
-|---|---|
-| ![Setup: PDF upload, extracted keyterms and examiner settings](docs/screenshots/setup.png) | ![The question card, the voice aura and the live rubric](docs/screenshots/live-question.png) |
-| Drop in a PDF. The abstract, methods and results are extracted in the browser, and technical terms become AssemblyAI keyterms. | `show_question` puts each question on screen while the examiner speaks it. The rubric on the right fills as you answer. |
+For exams, revision and learning a new topic. The agent uses retrieval practice, explain-it-simply prompts, application questions and supportive misconception correction. The rubric focuses on:
 
-| 3. Vague answer? It follows up | 4. It keeps you to time |
-|---|---|
-| ![A follow-up question built on the candidate's words, with examiner notes](docs/screenshots/live-follow-up.png) | ![The answer timer ring and delivery stats while the candidate talks](docs/screenshots/live-answer-timer.png) |
-| After a vague "um… it's probably the appearance", the examiner asks a follow-up built on those exact words. `record_score` adds private notes with evidence and a tip. | The ring shows how long the current answer has run. Ramble past the limit and the examiner cuts in. Pace, filler words and thinking time update live. |
+- Understanding
+- Recall
+- Application
+- Gaps and misconceptions
+- Communication
 
-| 5. A scored report | 6. Your weakest answer, answered two ways |
-|---|---|
-| ![Report with overall mark, verdict and rubric radar chart](docs/screenshots/report-score.png) | ![What the candidate said next to a model 5/5 answer](docs/screenshots/report-model-answer.png) |
-| Overall mark, verdict, a radar chart of the rubric and what to fix for each criterion. | What you actually said, next to a 5/5 answer built from your own report. One click starts a drill on that weak area. |
+### Project and presentation practice
 
-## How it uses AssemblyAI
+For project reviews, presentations, vivas and demonstrations. The agent asks questions grounded in the learner's material, challenges vague claims and helps practise a concise, defensible explanation.
 
-Everything runs over one WebSocket to the **Voice Agent API** (`wss://agents.assemblyai.com/v1/ws`), which handles speech-to-text, turn detection, the LLM and text-to-speech in one session.
+### Job interview panel
+
+For candidates preparing for a specific role. Add the job description, CV, cover letter and optional notes. The session uses two interviewer perspectives:
+
+- **Maya** — hiring-manager questions about motivation, role fit and behavioural evidence.
+- **Daniel** — technical questions about the role, problem solving and the candidate's experience.
+
+The interview rubric covers role fit, technical knowledge, problem solving, behavioural examples and communication.
+
+## Core features
+
+- **Own-material practice:** paste notes or extract text from a PDF in the browser.
+- **Live voice conversation:** speech recognition, turn detection, agent speech and interruption support through the AssemblyAI Voice Agent API.
+- **Adaptive questioning:** follow-ups are based on what you actually said, not a fixed question list.
+- **Live scoring:** the agent records evidence and feedback against the active rubric without reading private scoring notes aloud.
+- **Delivery coaching:** track pace, filler words, thinking time and answer timing from the live transcript.
+- **Thinking-time control:** allow longer pauses so a thoughtful answer is not cut off prematurely.
+- **Rambling protection:** long answers can trigger a concise intervention, helping practise clear communication.
+- **Model answer:** compare your weakest response with a stronger answer built from your own material.
+- **Progress history:** session scores, delivery metrics and weak areas are stored locally in the browser.
+- **Drill practice:** start another session focused on the weakest criterion from the report.
+- **Exportable report:** review the report in the app, export it as Markdown or print it to PDF.
+- **Responsive experience:** designed for phone, tablet and desktop use.
+- **Reduced-motion support:** animation-heavy surfaces respect the user's reduced-motion preference.
+
+## Privacy and security
+
+- The AssemblyAI API key stays on the server and is never sent to the browser.
+- The browser requests a short-lived session token from `/token`.
+- PDF text is extracted in the browser; the original PDF is not uploaded by this app.
+- Session history is stored in browser `localStorage` on the device where you practise.
+- Voice audio and live transcripts are sent to AssemblyAI for the active voice session because that service provides transcription and voice-agent functionality.
+- The server rate-limits token requests per IP and supports an optional allowed origin.
+- Do not paste passwords, payment details, government identifiers or other sensitive information into practice material.
+
+## How the technical flow works
 
 ```mermaid
 sequenceDiagram
-    participant B as Browser (VivaVoice)
-    participant S as server.mjs
+    participant B as Browser
+    participant S as Voice server
     participant A as AssemblyAI Voice Agent API
     B->>S: GET /token
-    S->>A: GET /v1/token (API key stays on server)
-    A-->>S: short-lived token
-    S-->>B: token
-    B->>A: WebSocket ?token=… + session.update (persona prompt, keyterms, turn_detection, voice, tools)
-    loop each answer
-        B->>A: input.audio (24 kHz PCM16, ~190 chunks/s)
-        A-->>B: transcript.user.delta / transcript.user
-        A-->>B: tool.call record_score / show_question
-        B-->>A: tool.result (after reply.done)
-        A-->>B: reply.audio + transcript.agent
+    S->>A: Mint short-lived token with server-side API key
+    A-->>S: Temporary token
+    S-->>B: Temporary token
+    B->>A: Open WebSocket and send session configuration
+    loop Practice session
+        B->>A: Microphone audio
+        A-->>B: User transcript and agent audio
+        A-->>B: show_question / record_score / finish_session tool calls
+        B-->>A: Tool results
     end
-    A-->>B: tool.call finish_session → report
-    B->>A: session.end
+    B->>A: End session
+    B->>B: Build report and save local progress
 ```
 
-| Voice Agent API feature | How VivaVoice uses it |
-|---|---|
-| Inline `session.update` | System prompt is generated per session from the student's abstract, mode, persona and question count |
-| `input.keyterms` | Up to 100 technical terms pulled from the abstract, to bias STT toward the student's jargon |
-| `input.transcription_prompt` | A plain description of the session ("a university viva about LeafLens…") built from the report, so STT has context beyond single terms |
-| `input.continuous_partials` | Steady live captions during long answers |
-| `input.turn_detection` | "Thinking time" mode sets `min_silence` 1600 ms / `max_silence` 4500 ms; otherwise AssemblyAI's adaptive endpointing is left on |
-| Client-side tools | `show_question`, `record_score` (with an enum of rubric ids), `finish_session` (report, weakest question and model answer); `response_instructions` keep scores unspoken, invalid calls return `is_error: true` |
-| Tool timing rules | `tool.result` queued and sent only when `reply.done` is the latest event; dropped on interrupted replies ([toolqueue.js](public/toolqueue.js)) |
-| `reply.create` | "End session" asks the examiner to wrap up and produce the report instead of hanging up cold; the rambling alarm uses it to make the examiner cut in mid-answer |
-| `input.speech.started` / `stopped` | Barge-in (flush playback), plus speaking-time and thinking-time metrics |
-| Temporary tokens | Browser never sees the API key; the server rate-limits token minting per IP |
-| `session.end` | Sent explicitly so the session isn't left open and billing |
-| `session.resume` | If the socket drops without `session.ended`, the app reconnects with a fresh token and resumes the same session inside AssemblyAI's 30 s window, so a Wi-Fi blip doesn't lose the viva |
-| `max_session_duration_seconds` | Capped at 30 min; since the API gives no warning, the examiner is asked to wrap up a minute before the cap |
+The browser configures each session with:
 
-## Run it locally
+- A mode-specific system prompt and rubric.
+- The selected voice, persona and question count.
+- Key terms extracted from the learner's material to improve technical transcription.
+- A transcription prompt describing the topic and context.
+- Turn-detection settings, including optional thinking time.
+- Client-side tools for questions, scoring and report completion.
 
-Requires **Node 18+**. No dependencies to install.
+## Technology
+
+- Node.js 18+
+- Native Node HTTP server with no runtime npm dependencies
+- Vanilla HTML, CSS and JavaScript
+- AssemblyAI Voice Agent API over WebSocket
+- Browser Web Audio APIs for microphone capture and playback
+- PDF.js for in-browser PDF text extraction
+- Canvas-based particle background and interactive halftone footer
+- `node:test` for automated tests
+
+## Run locally
+
+### Requirements
+
+- Node.js 18 or newer
+- An AssemblyAI API key with access to the Voice Agent API
+- A modern browser with microphone support
+
+### Setup
 
 ```bash
-git clone https://github.com/ShermaineYap/AssemblyAI-Voice-Agent-Hackathon.git
-cd AssemblyAI-Voice-Agent-Hackathon
-cp .env.example .env        # then put your key in it: ASSEMBLYAI_API_KEY=...
-npm start                   # → http://localhost:3000
+git clone https://github.com/akolobulus/Voice.git
+cd Voice
 ```
 
-Open the page, click **Try a sample** (or drop in your report PDF), then **Start the viva**. Headphones are recommended.
+Create a local `.env` file:
 
-Run the tests:
+```env
+ASSEMBLYAI_API_KEY=your_api_key_here
+```
+
+Start the server:
+
+```bash
+npm start
+```
+
+Open [http://localhost:3000](http://localhost:3000), choose a practice mode, add material or select **Try a sample**, and start a session. Grant microphone permission when prompted.
+
+### Run tests
 
 ```bash
 npm test
 ```
 
+The test suite covers server routes, token handling, rate limiting, static path safety, session configuration, key-term extraction, scoring tools, metrics, reports and resilience behaviour.
+
+## Configuration
+
+| Variable | Required | Default | Purpose |
+|---|---:|---:|---|
+| `ASSEMBLYAI_API_KEY` | Yes | — | Server-side key used to mint temporary Voice Agent tokens |
+| `PUBLIC_ORIGIN` | No | unset | Reject token requests from origins other than this value |
+| `TRUST_PROXY` | No | unset | Trust proxy headers when deployed behind a configured reverse proxy |
+| `TOKENS_PER_HOUR` | No | `20` | Maximum token requests per IP per hour |
+| `MAX_SESSION_SECONDS` | No | `1800` | Maximum Voice Agent session duration |
+
+Never commit `.env` or expose the API key in client-side code.
+
 ## Deploy
 
-**Vercel:** import the repo and add `ASSEMBLYAI_API_KEY` (and `TRUST_PROXY=1`) as environment variables. [`vercel.json`](vercel.json) serves `public/` as static files and sends `/token`, `/config` and `/health` to [`api/index.mjs`](api/index.mjs), which runs the same handler as `npm start`.
+### Vercel
 
-**Render:** the included [`render.yaml`](render.yaml) is a one-click Blueprint that asks for `ASSEMBLYAI_API_KEY` and nothing else.
+1. Import `https://github.com/akolobulus/Voice`.
+2. Add `ASSEMBLYAI_API_KEY` in the project environment variables.
+3. Add `TRUST_PROXY=1` when the deployment uses a trusted proxy.
+4. Deploy using the included [`vercel.json`](vercel.json).
 
-| Variable | Default | Purpose |
-|---|---|---|
-| `ASSEMBLYAI_API_KEY` | required | Stays on the server |
-| `PUBLIC_ORIGIN` | unset | If set, token requests from other origins are refused |
-| `TRUST_PROXY` | unset | Set behind a proxy (Render) so the per-IP limit sees the real client IP |
-| `TOKENS_PER_HOUR` | 20 | Sessions per IP per hour |
-| `MAX_SESSION_SECONDS` | 1800 | Hard cap on a session's length |
+The Vercel entry point [`api/index.mjs`](api/index.mjs) uses the same request handler as the local server. Static assets are served from [`public/`](public/).
+
+### Render
+
+The repository includes [`render.yaml`](render.yaml) for a Blueprint deployment. Add the required `ASSEMBLYAI_API_KEY` and verify the deployed `/health` endpoint before opening a live practice session.
+
+For production, configure HTTPS, restrict `PUBLIC_ORIGIN`, monitor token usage and rotate keys if they are ever exposed.
 
 ## Project structure
 
+```text
+server.mjs              HTTP server, environment loading, token minting and static serving
+api/index.mjs           Vercel entry point using the shared server handler
+vercel.json              Vercel routing and static asset configuration
+render.yaml              Render deployment configuration
+public/index.html        Setup, live session, report and footer markup
+public/app.js            Browser controller and session lifecycle
+public/session.js        Prompts, rubrics, tools and Voice Agent configuration
+public/audio.js          Microphone capture and audio playback
+public/metrics.js        Pace, filler-word and thinking-time calculations
+public/toolqueue.js      Safe Voice Agent tool-result timing
+public/report.js         Fallback report generation
+public/history.js        Local progress history and comparisons
+public/pdftext.js        In-browser PDF extraction and section selection
+public/ai-background.js  Animated particle and face background
+public/footer.js         Interactive halftone footer effect
+public/vendor/pdfjs/     Bundled PDF.js assets
+test/                    Node test suite
 ```
-server.mjs            zero-dependency Node server: static files, /token, /health, /config
-api/index.mjs         Vercel entry: the same handler as a serverless function
-vercel.json           Vercel config (static public/, rewrites to api/)
-public/
-  index.html          setup → live → report views
-  app.js              session lifecycle, event handling, tools, UI, report export
-  session.js          builds session.update: prompt, rubric, tools, keyterms, turn detection
-  toolqueue.js        tool.result timing per the Voice Agent API rules
-  metrics.js          pace, filler words, thinking time
-  audio.js            AudioWorklet mic capture + ring-buffer playback, resampled to 24 kHz
-  aura.js             WebGL orb that reacts to both voices and changes colour with agent state
-  report.js           fallback report if the session ends early
-  samples.js          one-click sample viva and interview
-  pdftext.js          pdf.js extraction and section picking (abstract, methods, results…)
-  history.js          progress across sessions, kept in localStorage
-  vendor/pdfjs/       pdf.js 6.3 (Apache-2.0), unmodified
-test/                 node:test unit + server tests
-```
+
+## Responsible use and limitations
+
+Voice provides practice feedback, not an official grade, medical advice, legal advice or a hiring decision. AI feedback can be incomplete or wrong, especially when source material is missing or ambiguous. Always verify important academic, professional and technical claims with a trusted source.
+
+For the best results:
+
+- Provide clear, relevant material rather than a single vague sentence.
+- Treat the agent's questions as rehearsal, not a prediction of the exact exam or interview.
+- Use the report to choose one concrete improvement and practise it again.
+- Check microphone permissions and use headphones where possible to reduce echo.
 
 ## Roadmap
 
-- Panel mode: two examiner voices taking turns
-- Phone-in practice via Twilio SIP for students without a good laptop mic
-- Bahasa Melayu and Mandarin examiner modes
+- More focused study plans and spaced-repetition sessions.
+- Richer progress views for topics, criteria and repeated attempts.
+- Additional interview-panel roles and configurable interviewer styles.
+- More language and voice options.
+- Optional account-backed history for people who want progress across devices.
+- Accessibility and performance refinements based on real user testing.
 
 ## License
 
-[MIT](LICENSE) © 2026 Shermaine Yap
+This project is available under the [MIT License](LICENSE).
