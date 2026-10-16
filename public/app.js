@@ -7,6 +7,8 @@ import { fallbackReport } from './report.js'
 import { extractPdf, pickSections } from './pdftext.js'
 import { loadHistory, saveSession, makeEntry, compareToPrevious, sparkline } from './history.js'
 import { createAura } from './aura.js'
+import { initFooter } from './footer.js'
+import { createAiBackground } from './ai-background.js'
 
 // Seconds of one answer before the examiner cuts in. ?ramble=30 lowers it for a demo.
 const RAMBLE_SECONDS = Math.max(10, Number(new URLSearchParams(location.search).get('ramble')) || 90)
@@ -15,6 +17,9 @@ const RAMBLE_WARN = Math.round(RAMBLE_SECONDS * 5 / 6)
 
 const $ = (id) => document.getElementById(id)
 const form = $('setup-form')
+initFooter($('site-footer'))
+$('footer-top').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+createAiBackground($('background-aura'))
 const STORE_KEY = 'vivavoice.setup.v1'
 
 // ---------------------------------------------------------------- state
@@ -97,8 +102,9 @@ function syncForm() {
   document.querySelectorAll('.interview-materials').forEach((el) => { el.hidden = !interview })
   $('drop-title').textContent = interview ? 'Drop your CV or application PDF here' : v.mode === 'study' ? 'Drop your notes PDF here' : 'Drop your report PDF here'
   $('drop-sub').textContent = interview ? 'You can also paste your CV, cover letter and job description below.' : 'The PDF is read in your browser and its text stays in this session.'
-  $('char-count').textContent = v.context.length
-  renderKeyterms(v.context.trim().length >= 40 || v.subject ? extractKeyterms(v.subject, v.context) : [])
+  const charCount = $('char-count')
+  if (charCount) charCount.textContent = v.context.length
+  if ($('keyterm-preview')) renderKeyterms(v.context.trim().length >= 40 || v.subject ? extractKeyterms(v.subject, v.context) : [])
   const persona = form.elements.persona.selectedOptions[0]?.textContent.split(' ')[0] || ''
   const voice = form.elements.voice.selectedOptions[0]?.textContent.split(' ')[0] || ''
   $('settings-summary').innerHTML = ''
@@ -739,15 +745,6 @@ function newReplySinceLast() { return repliedSinceYou }
 
 // ---------------------------------------------------------------- aura
 const aura = createAura($('orb'))
-// The landing page gets its own aura, breathing gently on its own.
-const heroAura = createAura($('hero-aura'))
-heroAura.setState('idle')
-;(function breathe(t) {
-  requestAnimationFrame(breathe)
-  if (document.body.dataset.view !== 'setup') return
-  const k = (t || 0) / 1000
-  heroAura.setLevels(0.05 + 0.04 * Math.sin(k * 1.3) + 0.03 * Math.sin(k * 3.1), 0)
-})()
 
 // ---------------------------------------------------------------- report
 // Score counts up from 0, like a result reveal.

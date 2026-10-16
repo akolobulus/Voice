@@ -9,42 +9,35 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body data-view="setup" data-state="idle">
 
-<div class="backdrop" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="grain"></i></div>
-
-<header class="topbar">
-  <a class="brand" href="/" aria-label="VivaVoice home">
-    <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a99cff"/><stop offset="1" stop-color="#5b3df5"/></linearGradient></defs><circle cx="16" cy="16" r="15" fill="url(#lg)"/><path d="M9.5 11l6.5 11 6.5-11" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span>VivaVoice</span>
-  </a>
-  <ol class="live-only stepper" id="stepper" aria-label="Question progress"></ol>
-  <div class="live-only status" id="status"><span class="dot"></span><span id="status-text">connecting</span></div>
-  <div class="live-only meter mono" aria-label="Elapsed time"><span id="elapsed">0:00</span></div>
-  <button class="live-only btn end" id="end-btn">End session</button>
-</header>
+<div class="backdrop" aria-hidden="true"><canvas id="background-aura"></canvas><i class="b1"></i><i class="b2"></i><i class="grain"></i></div>
 
 <!-- ============ SETUP ============ -->
 <main id="view-setup" class="view setup">
   <section class="hero">
     <div class="hero-copy">
-      <h1>Learn and prepare <em>out loud</em>, with a peer who knows your material.</h1>
-      <p class="lede">Add your notes or application materials, then practise with a voice coach that asks, listens, gives feedback and tracks your progress.</p>
+      <p class="eyebrow hero-kicker digital-flip"><span>A calmer way to get ready</span></p>
+      <h1 class="digital-flip"><span>Turn your notes into</span> <em><span>confidence.</span></em></h1>
+      <p class="lede digital-flip"><span>A voice peer that helps you learn, practise and improve before the exam, presentation or interview.</span></p>
       <ol class="path" aria-label="How it works">
         <li><b>1</b><span>Add</span><small>your notes or application</small></li>
         <li><b>2</b><span>Practise</span><small>with a live voice peer</small></li>
         <li><b>3</b><span>Improve</span><small>with feedback and progress</small></li>
       </ol>
     </div>
-    <div class="hero-orb" aria-hidden="true">
-      <canvas id="hero-aura"></canvas>
-    </div>
+    <div class="scroll-cue" aria-hidden="true"><span></span>Scroll to begin</div>
   </section>
 
   <form id="setup-form" class="card form" autocomplete="off">
+    <div class="form-intro">
+      <span class="eyebrow accent">Start here</span>
+      <h2>Choose how you want to practise</h2>
+      <p>Bring your own material and get a session shaped around your goal.</p>
+    </div>
     <div class="form-head">
       <div class="seg" role="radiogroup" aria-label="Session type">
         <label><input type="radio" name="mode" value="study" checked><span>Study partner</span></label>
@@ -58,6 +51,7 @@
       <input type="file" id="pdf-input" accept="application/pdf" hidden>
       <div class="drop-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="m9 15 3-3 3 3"/></svg></div>
       <div class="drop-text"><b id="drop-title">Drop notes or a document PDF here</b><small id="drop-sub">Your PDF is read in the browser and its text stays in this session.</small></div>
+      <span class="drop-action">Browse files <span aria-hidden="true">↗</span></span>
     </div>
 
     <div class="row two">
@@ -75,8 +69,6 @@
     <label class="field interview-materials" id="job-description-field" hidden><span>Job description</span>
     <textarea name="jobDescription" rows="5" maxlength="5000" placeholder="Paste the job description and requirements."></textarea>
     </label>
-    <div class="keyterms"><span class="kt-label">Sent to AssemblyAI as <b>keyterms</b> <span class="muted">· <span id="char-count">0</span>/6000</span></span><span id="keyterm-preview" class="kt-list"></span></div>
-
     <details class="settings">
       <summary><span>Session settings</span><span class="summary-chips" id="settings-summary"></span></summary>
       <div class="settings-grid">
@@ -101,7 +93,6 @@
 
     <p class="error" id="setup-error" role="alert" hidden></p>
     <div class="actions">
-      <p class="fineprint">🎧 Headphones recommended. Audio goes to AssemblyAI for the live session only.</p>
       <button type="submit" class="btn primary big" id="start-btn">Start learning</button>
     </div>
   </form>
@@ -117,14 +108,20 @@
   </section>
 
   <section class="how">
-    <div><span class="how-ic">◉</span><b>Talk through your notes</b><p>Questions are grounded in your own material, with hints and follow-ups when you get stuck.</p></div>
-    <div><span class="how-ic">↻</span><b>Practise any goal</b><p>Revise for exams, rehearse presentations, or meet a two-person interview panel.</p></div>
-    <div><span class="how-ic">▲</span><b>See your progress</b><p>Get private feedback, a model answer and a clear next step after every session.</p></div>
+    <div><span class="how-ic">◉</span><b class="digital-flip"><span>Talk through your notes</span></b><p>Questions are grounded in your own material, with hints and follow-ups when you get stuck.</p></div>
+    <div><span class="how-ic">↻</span><b class="digital-flip"><span>Practise any goal</span></b><p>Revise for exams, rehearse presentations, or meet a two-person interview panel.</p></div>
+    <div><span class="how-ic">▲</span><b class="digital-flip"><span>See your progress</span></b><p>Get private feedback, a model answer and a clear next step after every session.</p></div>
   </section>
 </main>
 
 <!-- ============ LIVE ============ -->
 <main id="view-live" class="view live">
+  <div class="livebar">
+    <ol class="stepper" id="stepper" aria-label="Question progress"></ol>
+    <div class="status" id="status"><span class="dot"></span><span id="status-text">connecting</span></div>
+    <div class="meter mono" aria-label="Elapsed time"><span id="elapsed">0:00</span></div>
+    <button class="btn end" id="end-btn">End session</button>
+  </div>
   <section class="stage">
     <div class="card question" id="question-card">
       <div class="q-meta"><span class="eyebrow" id="q-num">Getting ready</span><span class="tag" id="q-topic" hidden></span></div>
@@ -210,6 +207,16 @@
   </div>
 </main>
 
+<footer class="site-footer" id="site-footer">
+  <canvas aria-hidden="true"></canvas>
+  <div class="footer-top">
+    <div class="footer-brand"><strong class="digital-flip"><span>VOICE / LEARN OUT LOUD</span></strong><span>A thoughtful peer for study, presentations and interviews.</span></div>
+    <div class="footer-col"><h3>Practice</h3><a href="#setup-form">Study partner</a><a href="#setup-form">Project practice</a><a href="#setup-form">Interview panel</a></div>
+    <div class="footer-col"><h3>Explore</h3><a href="#progress">Your progress</a><a href="#setup-form">Bring your notes</a><a href="#setup-form">Start a session</a></div>
+    <div class="footer-col"><h3>Navigate</h3><button type="button" id="footer-top">Back to top</button><a href="mailto:hello@voice.study">Contact</a></div>
+  </div>
+  <div class="footer-rule"><span>Private practice · clear feedback · steady progress</span><span>© 2026 Voice</span></div>
+</footer>
 <script type="module" src="/app.js"></script>
 </body>
 </html>
