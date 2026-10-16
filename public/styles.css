@@ -473,6 +473,12 @@ h1, h2, h3 { color: var(--text-strong); }
 .footer-top { display: grid; grid-template-columns: 1.3fr repeat(3, 1fr); gap: 28px; padding: 38px 5vw 0; }
 .footer-brand strong { display: block; font-weight: 500; color: #26356f; }
 .footer-brand span { display: block; max-width: 240px; margin-top: 6px; opacity: .62; letter-spacing: .06em; text-transform: none; }
+.footer-maker { display: grid; gap: 8px; margin-top: 20px; color: #5262b4; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+.footer-maker b { color: #26356f; font-weight: 500; }
+.footer-socials { display: flex !important; gap: 14px; max-width: none !important; margin-top: 0 !important; opacity: 1 !important; }
+.footer-socials a { color: inherit; text-decoration: none; font: inherit; letter-spacing: inherit; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat; transition: opacity .25s ease, background-size .35s cubic-bezier(.2,.7,.1,1); }
+.footer-socials a:hover { opacity: 1; background-size: 100% 1px; }
+.footer-socials a:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
 .footer-col { display: grid; align-content: start; gap: 7px; }
 .footer-col h3 { margin: 0 0 3px; font: inherit; color: inherit; opacity: .5; }
 .footer-col a, .footer-col button { width: max-content; padding: 0; border: 0; color: inherit; background: none; text-decoration: none; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; opacity: .78; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat; transition: opacity .25s ease, background-size .35s cubic-bezier(.2,.7,.1,1); }
@@ -636,6 +642,7 @@ h1, h2, h3 { color: var(--text-strong); }
   .footer-brand { grid-column: 1 / -1; }
   .footer-brand strong { font-size: 11px; }
   .footer-brand span { max-width: 280px; font-size: 10px; }
+  .footer-maker { margin-top: 18px; }
   .footer-col { gap: 9px; }
   .footer-col h3, .footer-col a, .footer-col button { font-size: 10px; }
   .footer-rule { display: grid; gap: 6px; margin: 34px 22px 0; font-size: 9px; }
