@@ -421,6 +421,12 @@ h1, h2, h3 { color: var(--text-strong); }
   -webkit-background-clip: text;
   background-clip: text;
 }
+.hero h1 em > span {
+  background: linear-gradient(90deg, #5867e8, #159b78);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 .hero h1 { max-width: 680px; }
 .hero h1.digital-flip { font-family: var(--mono); font-weight: 500; letter-spacing: .035em; }
 .hero h1.digital-flip > span, .hero h1.digital-flip em > span {
