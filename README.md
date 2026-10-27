@@ -1,5 +1,5 @@
 # Voice
-Voice is a browser-based practice partner for students, presenters and job seekers. Bring your own notes, syllabus, project material, CV, cover letter or job description, then practise out loud with a live voice agent that asks useful questions, follows up on weak answers and gives you a clear next step.
+Voice is a browser-based practice partner for students, presenters and job seekers. Bring your own notes, syllabus, project material, CV, cover letter or job description, then practise out loud with a live voice agent that asks useful questions, follows up on weak answers and gives you a clear next ste
 **Turn what you know into confidence.**
 
 Voice is a browser-based practice partner for students, presenters and job seekers. Bring your own notes, syllabus, project material, CV, cover letter or job description, then practise out loud with a live voice agent that asks useful questions, follows up on weak answers and gives you a clear next step.
